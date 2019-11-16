@@ -119,6 +119,8 @@ class App extends Component {
             <>
                 {this.state.loading && <div className="loading-indicator">Loading...</div>}
 
+                <h1>Save your money. Reduce food waste.</h1>
+                <h2>What do you want to cook?</h2>
                 <form
                     className="request-form"
                     onSubmit={this.handleSearchSubmit}

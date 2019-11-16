@@ -49,7 +49,6 @@ class App extends Component {
     renderRecipes() {
         return this.state.recipes.map(item => (
             <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
-                <div className="recipe-item__id">{item.payload}</div>
                 <div className="recipe-item__title">{item.suggestion}</div>
             </div>
         ));

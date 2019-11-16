@@ -47,11 +47,6 @@ body {
     cursor: pointer;
 }
 
-.recipe-item__id {
-    color: #888;
-    margin-right: 20px;
-}
-
 .recipe-item__title {
 
 }

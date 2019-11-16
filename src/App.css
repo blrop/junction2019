@@ -29,8 +29,10 @@ body {
 }
 
 .recipe-wrapper {
-    margin: 20px auto;
-    width: 960px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px;
 }
 
 .recipe-item {

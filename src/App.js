@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getRecipe, getRecipeList} from "./requestFunctions";
+import {getRecipe, getRecipeList, getProductsByStore} from "./requestFunctions";
 
 class App extends Component {
     constructor(props) {

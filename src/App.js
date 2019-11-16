@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getRecipeList} from "./requestFunctions";
+import {getRecipe, getRecipeList} from "./requestFunctions";
 
 class App extends Component {
     constructor(props) {
@@ -30,10 +30,6 @@ class App extends Component {
         this.sendSearchRequest(this.state.query);
     }
 
-    handleRecipeItemClick(id) {
-        console.log(id);
-    }
-
     async sendSearchRequest(requestString) {
         this.setState({ loading: true });
         const response = await getRecipeList(requestString);
@@ -41,6 +37,13 @@ class App extends Component {
             loading: false,
             recipes: response.suggestions,
         });
+    }
+
+    async handleRecipeItemClick(id) {
+        this.setState({ loading: true });
+        const recipes = await getRecipe(id);
+        console.log(recipes);
+        this.setState({ loading: false });
     }
 
     renderRecipes() {

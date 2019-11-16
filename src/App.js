@@ -1,36 +1,72 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
+import {APP_KEY, REQUEST_URL} from "./constants";
 
-function App() {
-    const appKey = 'e99065a211b3465f8b470a08d50d2ef1';
+class App extends Component {
+    constructor(props) {
+        super(props);
 
-    const sendRequest = async () => {
+        this.handleQueryChange = this.handleQueryChange.bind(this);
+        this.sendRequest = this.sendRequest.bind(this);
+        this.renderRecipes = this.renderRecipes.bind(this);
+
+        this.state = {
+            query: '',
+            recipes: [],
+        };
+    }
+
+    handleQueryChange(e) {
+        this.setState({
+            query: e.target.value,
+        });
+    }
+
+    async sendRequest() {
         const objectToSend = {
             "query": "Car",
         };
 
-        const response = await fetch(`http://localhost:3000/v1/suggestions/recipes`, {
+        const rawResponse = await fetch(`${REQUEST_URL}/v1/suggestions/recipes`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                'Ocp-Apim-Subscription-Key': appKey,
+                'Ocp-Apim-Subscription-Key': APP_KEY,
             },
             body: JSON.stringify(objectToSend),
         });
-        const text = await response.text();
-        console.log(text);
-    };
+        const text = await rawResponse.text();
+        const response = JSON.parse(text);
+        this.setState({
+            recipes: response.suggestions,
+        });
+    }
 
-    const sendRequest2 = async () => {
-        
-    };
+    renderRecipes() {
+        return this.state.recipes.map(item => (
+            <div className="recipe-item">{item.payload}. {item.suggestion}</div>
+        ));
+    }
 
-    return (
-        <div className="app">
-            <button className="request-button" onClick={sendRequest}>Send 1</button>
-            <button className="request-button" onClick={sendRequest2}>Send 2</button>
-        </div>
-    );
+    render() {
+        return (
+            <>
+                <div className="request-form">
+                    <input
+                        type="text"
+                        onChange={this.handleQueryChange}
+                        value={this.state.query}
+                        className="request-form__input"
+                        placeholder="Recipe name..."
+                    />
+                    <button className="request-form__button" onClick={this.sendRequest}>Search</button>
+                </div>
+                <div className="recipe-wrapper">
+                    {this.renderRecipes()}
+                </div>
+            </>
+        );
+    }
 }
 
 export default App;

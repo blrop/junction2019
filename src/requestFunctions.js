@@ -60,16 +60,28 @@ export const getProductsByStore = async (storeId) =>
 {
     const objectToSend = {"filters": {
             "storeAvailability" : storeId.toString(),
-            }
-        };
+        }
+    };
 
     const rawResponse = await fetch(`${REQUEST_URL}/${API_VER}/search/products`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': JSON_TYPE,
-            'Ocp-Apim-Subscription-Key': APP_KEY,
-        },
-        body: JSON.stringify(objectToSend),
-    });
+    method: 'POST',
+    headers: {
+        'Content-Type': JSON_TYPE,
+        'Ocp-Apim-Subscription-Key': APP_KEY,
+    },
+    body: JSON.stringify(objectToSend),
+});
+    return await rawResponse.json();
+};
+
+export const getProductDetailsFromStore = async (storeId, ean) =>
+{
+    const rawResponse = await fetch(`${REQUEST_URL}/v4/stores/${storeId}/products?ean=${ean}`, {
+    method: 'GET',
+    headers: {
+        'Content-Type': JSON_TYPE,
+        'Ocp-Apim-Subscription-Key': APP_KEY,
+    }
+});
     return await rawResponse.json();
 };

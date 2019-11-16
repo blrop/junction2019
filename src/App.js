@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getRecipe, getRecipeList, getProductsByStore} from "./requestFunctions";
+import {getRecipe, getRecipeList, getProductsByStore, getProductDetailsFromStore} from "./requestFunctions";
 
 class App extends Component {
     constructor(props) {
@@ -43,6 +43,8 @@ class App extends Component {
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
         console.log(recipes);
+        //const pd = await getProductDetailsFromStore('S387', '6410405045416');
+        //console.log(pd);
         this.setState({ loading: false });
     }
 

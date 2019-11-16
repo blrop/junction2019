@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getPictures } from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore, getPictures } from "./requestFunctions";
 import _ from 'lodash';
 
 class App extends Component {

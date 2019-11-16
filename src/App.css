@@ -31,11 +31,16 @@ body {
 .recipe-wrapper {
     margin: 20px auto;
     width: 960px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .recipe-item {
     display: flex;
     padding: 5px;
+    align-items: center;
+    flex-shrink: 0;
+    width: 400px;
 }
 
 .recipe-item:nth-child(even) {
@@ -45,6 +50,10 @@ body {
 .recipe-item:hover {
     background: #fc5;
     cursor: pointer;
+}
+
+.recipe-item__picture {
+    margin-right: 10px;
 }
 
 .recipe-item__title {

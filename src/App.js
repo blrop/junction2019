@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore, getPictures } from "./requestFunctions";
 import _ from 'lodash';
+import {PICTURE_LINK} from "./constants";
 
 class App extends Component {
     constructor(props) {
@@ -73,6 +74,9 @@ class App extends Component {
     renderRecipes() {
         return _.map(this.state.recipes, item => (
             <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
+                <div className="recipe-item__picture">
+                    <img src={`${PICTURE_LINK}${item.payload}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+                </div>
                 <div className="recipe-item__title">{item.suggestion}</div>
             </div>
         ));

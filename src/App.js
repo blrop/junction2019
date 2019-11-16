@@ -32,7 +32,8 @@ class App extends Component {
             recipesFound: true,
             preparationTime: '',
             ingredients: '',
-            instructions: ''
+            instructions: '',
+            stores: {},
         };
     }
 
@@ -105,13 +106,42 @@ class App extends Component {
             instructions: recipes[0].Instructions,
 
         });
-        console.log('preparationTime: ', this.state.preparationTime);
-        console.log('ingredients: ', this.state.ingredients);
-        console.log('instructions: ', this.state.instructions);
+        // console.log('preparationTime: ', this.state.preparationTime);
+        // console.log('ingredients: ', this.state.ingredients);
+        // console.log('instructions: ', this.state.instructions);
+
+
+        let filteredStores = [];
+        this.state.productsByStores.forEach((products, index) => {
+            const haveProductsFromRecipe = products.results.some(productItem => {
+                if (!productItem.ingredientType) {
+                    return false;
+                }
+                return this.state.recipes[id].data.Ingredients[0].SubSectionIngredients.find(i => {
+                    return i[0].IngredientType === productItem.ingredientType.id;
+                }) !== -1;
+            });
+            if (haveProductsFromRecipe) {
+                filteredStores.push(this.state.stores[index]);
+            }
+        });
+        this.setState({ filteredStores: filteredStores });
+        console.log(filteredStores);
     }
 
     async loadStores() {
-        console.log(await getStoresNearby());
+        let stores = await getStoresNearby();
+
+        let promiseArray = [];
+        _.forEach(stores, item => {
+            promiseArray.push(getProductsByStore(item.Id));
+        });
+        Promise.all(promiseArray).then(productsByStores => {
+            this.setState({
+                productsByStores: productsByStores,
+                stores: stores,
+            });
+        });
     }
 
     renderRecipes() {

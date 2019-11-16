@@ -22,6 +22,7 @@ export default class Img extends Component {
             <img
                 src={this.state.valid ? this.props.src : '/no.png'}
                 onError={this.handleError}
+                alt=""
             />
         );
     }

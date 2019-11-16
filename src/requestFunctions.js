@@ -57,7 +57,8 @@ export const getStoresNearby = async () => {
         },
         body: JSON.stringify(objectToSend),
     });
-    return await  rawResponse.json();
+    const response = await rawResponse.json();
+    return response.results;
 };
 
 export const getProductsByStore = async (storeId) =>

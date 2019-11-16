@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getRecipe, getRecipeList, getStoresNearby } from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore } from "./requestFunctions";
 import _ from 'lodash';
 import {PICTURE_LINK} from "./constants";
 import classNames from 'classnames';
+import {MAP_DEFAULT_PROPS} from "./constants";
+
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class App extends Component {
+    static defaultProps = MAP_DEFAULT_PROPS;
+
     constructor(props) {
         super(props);
 
@@ -113,6 +120,20 @@ class App extends Component {
                 <div className="recipe-wrapper">
                     {this.renderRecipes()}
                 </div>
+        <div style={{ height: '100vh', width: '100%' }}>
+<GoogleMapReact
+    bootstrapURLKeys={{ key: 'AIzaSyAlDha-FyRkP7V7B8E3SyxhtCYqeL_6nPI' }}
+    defaultCenter={this.props.center}
+    defaultZoom={this.props.zoom}
+
+        >
+        <AnyReactComponent
+    lat={60.1603071}
+    lng={24.8751406}
+    text="My Marker"
+        />
+        </GoogleMapReact>
+        </div>
             </>
         );
     }

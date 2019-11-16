@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore } from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getPictures } from "./requestFunctions";
 import _ from 'lodash';
 
 class App extends Component {
@@ -23,6 +23,7 @@ class App extends Component {
 
     componentDidMount() {
         this.loadStores();
+        this.loadRecipePictures();
     }
 
     handleQueryChange(e) {
@@ -63,6 +64,10 @@ class App extends Component {
 
     async loadStores() {
         console.log(await getStoresNearby());
+    }
+
+    async loadRecipePictures() {
+        const pictures = await getPictures();
     }
 
     renderRecipes() {

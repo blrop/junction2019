@@ -16,6 +16,11 @@ export const getRecipeList = async (requestString) => {
     return await rawResponse.json();
 };
 
+export const getPictures = async () => {
+    const result = await fetch(`${REQUEST_URL}/dish_pictures.json`);
+    return await result.json();
+};
+
 export const getRecipe = async (id) => {
     const objectToSend = {
         "filters": { "ids": [id.toString()] },
@@ -33,7 +38,7 @@ export const getRecipe = async (id) => {
     return response.results;
 };
 
-export const getStoresNearby = async (id) => {
+export const getStoresNearby = async () => {
     const objectToSend = {
         "filters": {
             "locationDistance": {

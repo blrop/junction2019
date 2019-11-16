@@ -15,7 +15,9 @@ import {MAP_DEFAULT_PROPS} from "./constants";
 import GoogleMapReact from 'google-map-react';
 import Img from "./Img";
 
-const AnyReactComponent = () => <div className="marker">&#128315;</div>;
+const AnyReactComponent = (props) => {
+    return <div className="marker">&#128315;</div>;
+};
 
 class App extends Component {
     static defaultProps = MAP_DEFAULT_PROPS;
@@ -39,6 +41,7 @@ class App extends Component {
             ingredients: '',
             instructions: '',
             stores: {},
+            filteredStores: [],
         };
     }
 
@@ -210,10 +213,15 @@ class App extends Component {
                         defaultCenter={this.props.center}
                         defaultZoom={this.props.zoom}
                     >
-                        <AnyReactComponent
-                            lat={60.1603071}
-                            lng={24.8751406}
-                        />
+                        {this.state.filteredStores.map(store => {
+                            return (
+                                <AnyReactComponent
+                                    key={store.Id}
+                                    lat={store.Coordinate.Latitude}
+                                    lng={store.Coordinate.Longitude}
+                                />
+                            );
+                        })}
                     </GoogleMapReact>
                 </div>
             </>

@@ -169,9 +169,18 @@ class App extends Component {
                     <div className="item-description">
                         <div className="recipe-item__title">{item.suggestion}</div>
                         {item.expanded && <div>
-                            <div className="preparation-time">{this.state.preparationTime}</div>
-                            <div className="ingredients">{this.state.ingredients}</div>
-                            <div className="instructions">{this.state.instructions}</div>
+                            <div className="recipe-item-b">
+                                <div className="recipe-item-b-title">Preparation Time</div>
+                                <div className="preparation-time">{this.state.preparationTime}</div>
+                            </div>
+                            <div className="recipe-item-b">
+                                <div className="recipe-item-b-title">Ingredients</div>
+                                <div className="ingredients">{this.state.ingredients}</div>
+                            </div>
+                            <div className="recipe-item-b">
+                                <div className="recipe-item-b-title">Instructions</div>
+                                <div className="instructions">{this.state.instructions}</div>
+                            </div>
                         </div>}
                     </div>
                 </div>

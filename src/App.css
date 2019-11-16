@@ -162,6 +162,17 @@ h2 {
     padding: 20px;
 }
 
+.recipe-item-b {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.recipe-item-b-title {
+    font-weight: bold;
+    width: 100%;
+    line-height:25px;
+}
 .marker {
     font-size: 30px;
 }

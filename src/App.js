@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
+import './reset.css';
 import './App.css';
-import {getRecipe, getRecipeList} from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore } from "./requestFunctions";
+import _ from 'lodash';
+import {PICTURE_LINK} from "./constants";
+import classNames from 'classnames';
+import {MAP_DEFAULT_PROPS} from "./constants";
+
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class App extends Component {
+    static defaultProps = MAP_DEFAULT_PROPS;
+
     constructor(props) {
         super(props);
 
@@ -15,19 +26,43 @@ class App extends Component {
         this.state = {
             loading: false,
             query: '',
-            recipes: [],
+            recipes: {},
+            searchFieldIsFalid: true,
+            recipesFound: true
         };
+    }
+
+    componentDidMount() {
+        this.loadStores();
     }
 
     handleQueryChange(e) {
         this.setState({
             query: e.target.value,
-        });
+            searchFieldIsFalid: true
+        })
     }
 
     handleSearchSubmit(e) {
         e.preventDefault();
-        this.sendSearchRequest(this.state.query);
+        if (this.state.query && this.state.query !== '') {
+            this.sendSearchRequest(this.state.query);
+            if (this.state.recipes.length === 0) {
+                this.setState({
+                    recipesFound: false
+                });
+                console.log('no recipes found')
+            } else {
+                this.setState({
+                    recipesFound: true
+                });
+            }
+
+        } else {
+            this.setState({
+                searchFieldIsFalid: false
+            })
+        }
     }
 
     async sendSearchRequest(requestString) {
@@ -35,23 +70,48 @@ class App extends Component {
         const response = await getRecipeList(requestString);
         this.setState({
             loading: false,
-            recipes: response.suggestions,
+            recipes: _.keyBy(response.suggestions, item => item.payload),
         });
     }
 
     async handleRecipeItemClick(id) {
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
-        console.log(recipes);
-        this.setState({ loading: false });
+        const updatedRecipes = { ...this.state.recipes };
+        recipes.forEach(item => {
+            if (!updatedRecipes[item.Id]) {
+                console.log('error');
+            }
+            updatedRecipes[item.Id].data = item;
+        });
+        this.setState({
+            loading: false,
+            recipes: updatedRecipes,
+        });
+    }
+
+    async loadStores() {
+        console.log(await getStoresNearby());
     }
 
     renderRecipes() {
-        return this.state.recipes.map(item => (
-            <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
-                <div className="recipe-item__title">{item.suggestion}</div>
-            </div>
-        ));
+        return _.map(this.state.recipes, item => {
+            const id = item.payload;
+            return (
+                <div
+                    className={classNames("recipe-item", {
+                        "recipe-item--expanded": item.data,
+                    })}
+                    key={id}
+                    onClick={() => this.handleRecipeItemClick(id)}
+                >
+                    <div className="recipe-item__picture">
+                        <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+                    </div>
+                    <div className="recipe-item__title">{item.suggestion}</div>
+                </div>
+            );
+        });
     }
 
     render() {
@@ -71,7 +131,7 @@ class App extends Component {
                             type="text"
                             onChange={this.handleQueryChange}
                             value={this.state.query}
-                            className="request-form__input"
+                            className={this.state.searchFieldIsFalid ? 'request-form__input' : 'request-form__input error'}
                             placeholder="Recipe name..."
                             autoFocus
                         />
@@ -80,8 +140,22 @@ class App extends Component {
                 </form>
 
                 <div className="recipe-wrapper">
-                    {this.renderRecipes()}
+                    {this.state.recipesFound ? this.renderRecipes() : 'Sorry, no recieps found for your request'}
                 </div>
+        <div style={{ height: '100vh', width: '100%' }}>
+<GoogleMapReact
+    bootstrapURLKeys={{ key: 'AIzaSyAlDha-FyRkP7V7B8E3SyxhtCYqeL_6nPI' }}
+    defaultCenter={this.props.center}
+    defaultZoom={this.props.zoom}
+
+        >
+        <AnyReactComponent
+    lat={60.1603071}
+    lng={24.8751406}
+    text="My Marker"
+        />
+        </GoogleMapReact>
+        </div>
             </>
         );
     }

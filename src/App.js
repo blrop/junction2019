@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import {APP_KEY, REQUEST_URL} from "./constants";
+import {getRecipeList} from "./requestFunctions";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
         this.handleQueryChange = this.handleQueryChange.bind(this);
-        this.sendRequest = this.sendRequest.bind(this);
+        this.sendSearchRequest = this.sendSearchRequest.bind(this);
         this.renderRecipes = this.renderRecipes.bind(this);
         this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
         this.handleRecipeItemClick = this.handleRecipeItemClick.bind(this);
@@ -27,34 +27,18 @@ class App extends Component {
 
     handleSearchSubmit(e) {
         e.preventDefault();
-        this.sendRequest(this.state.query);
+        this.sendSearchRequest(this.state.query);
     }
 
     handleRecipeItemClick(id) {
         console.log(id);
     }
 
-    async sendRequest(requestString) {
+    async sendSearchRequest(requestString) {
         this.setState({ loading: true });
-
-        const objectToSend = {
-            query: requestString,
-        };
-
-        const rawResponse = await fetch(`${REQUEST_URL}/v1/suggestions/recipes`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Ocp-Apim-Subscription-Key': APP_KEY,
-            },
-            body: JSON.stringify(objectToSend),
-        });
-        const text = await rawResponse.text();
-        this.setState({ loading: false });
-
-        console.log(text);
-        const response = JSON.parse(text);
+        const response = await getRecipeList(requestString);
         this.setState({
+            loading: false,
             recipes: response.suggestions,
         });
     }

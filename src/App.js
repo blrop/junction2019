@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import {MAP_DEFAULT_PROPS} from "./constants";
 
 import GoogleMapReact from 'google-map-react';
+import Img from "./Img";
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -106,7 +107,7 @@ class App extends Component {
                     onClick={() => this.handleRecipeItemClick(id)}
                 >
                     <div className="recipe-item__picture">
-                        <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+                        <Img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} />
                     </div>
                     <div className="recipe-item__title">{item.suggestion}</div>
                 </div>

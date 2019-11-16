@@ -56,32 +56,66 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 400px;
+    width: 850px;
     margin: auto;
 }
 
 .recipe-item {
     display: flex;
-    width: 400px;
+    width: 250px;
     flex-wrap: wrap;
     padding: 10px;
+    background-color: #ffd3ab;
 }
 
 .recipe-item:nth-child(odd) {
-    background-color: rgba(255, 228, 0, 0.22);
+    /*background-color: rgba(255, 228, 0, 0.22);*/
+
 }
 
 .recipe-item:nth-child(even) {
-    background-color: rgba(255, 130, 0, 0.41);
+    /*background-color: rgba(255, 130, 0, 0.41);*/
 }
 
 .recipe-item:hover {
     background: #8ee891;
     cursor: pointer;
+    -webkit-transform:scale(1.1); /*Webkit: Scale down image to 0.8x original size*/
+    -moz-transform:scale(1.1); /*Mozilla scale version*/
+    -o-transform:scale(1.1); /*Opera scale version*/
+    -webkit-transition-duration: 0.5s; /*Webkit: Animation duration*/
+    -moz-transition-duration: 0.5s; /*Mozilla duration version*/
+    -o-transition-duration: 0.5s; /*Opera duration version*/
+}
+
+.recipe-item--expanded {
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.recipe-item--expanded:hover {
+    -webkit-transform:scale(1); /*Webkit: Scale down image to 0.8x original size*/
+    -moz-transform:scale(1); /*Mozilla scale version*/
+    -o-transform:scale(1); /*Opera scale version*/
+}
+
+.recipe-item__picture {
+    margin-right: 10px;
+    width: 250px;
+    height: 200px;
+    flex-shrink: 0;
+}
+
+.recipe-item__picture img {
+    object-fit: cover;
+    width: 250px;
+    height: 200px;
 }
 
 .recipe-item__title {
-
+    flex-shrink: 0;
+    width: auto;
+    font-size: 35px;
 }
 
 .selected-recipe-wrapper {

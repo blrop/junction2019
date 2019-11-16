@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import './reset.css';
 import './App.css';
-import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore, getPictures } from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore } from "./requestFunctions";
 import _ from 'lodash';
+import {PICTURE_LINK} from "./constants";
+import classNames from 'classnames';
+import {MAP_DEFAULT_PROPS} from "./constants";
+
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class App extends Component {
+    static defaultProps = MAP_DEFAULT_PROPS;
+
     constructor(props) {
         super(props);
 
@@ -19,13 +28,15 @@ class App extends Component {
             query: '',
             recipes: {},
             searchFieldIsFalid: true,
-            recipesFound: true
+            recipesFound: true,
+            preparationTime: '',
+            ingredients: '',
+            instructions: ''
         };
     }
 
     componentDidMount() {
         this.loadStores();
-        this.loadRecipePictures();
     }
 
     handleQueryChange(e) {
@@ -67,35 +78,66 @@ class App extends Component {
     }
 
     async handleRecipeItemClick(id) {
+        let updatedRecipes = { ...this.state.recipes };
+
+
+        updatedRecipes = _.mapValues(this.state.recipes, item => {
+            item.expanded = (item.payload === id);
+            return item;
+        });
+
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
-        const updatedRecipes = { ...this.state.recipes };
         recipes.forEach(item => {
             if (!updatedRecipes[item.Id]) {
                 console.log('error');
             }
             updatedRecipes[item.Id].data = item;
+            updatedRecipes[item.Id].expanded = true;
         });
+
         this.setState({
             loading: false,
             recipes: updatedRecipes,
+            preparationTime: recipes[0].PreparationTime.Description,
+            ingredients: recipes[0].Ingredients[0].SubSectionIngredients.map((item) => item[0].Name),
+            instructions: recipes[0].Instructions,
+
         });
+        console.log('preparationTime: ', this.state.preparationTime);
+        console.log('ingredients: ', this.state.ingredients);
+        console.log('instructions: ', this.state.instructions);
     }
 
     async loadStores() {
         console.log(await getStoresNearby());
     }
 
-    async loadRecipePictures() {
-        const pictures = await getPictures();
-    }
-
     renderRecipes() {
-        return _.map(this.state.recipes, item => (
-            <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
-                <div className="recipe-item__title">{item.suggestion}</div>
-            </div>
-        ));
+        return _.map(this.state.recipes, item => {
+            const id = item.payload;
+            return (
+                <div
+                    className={classNames("recipe-item", {
+                        "recipe-item--expanded": item.expanded,
+                    })}
+                    key={id}
+                    onClick={() => this.handleRecipeItemClick(id)}
+                >
+                    <div className="recipe-item__picture">
+                        <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+                    </div>
+                    <div className="item-description">
+                        <div className="recipe-item__title">{item.suggestion}</div>
+                        {item.expanded && <div>
+                            <div className="preparation-time">{this.state.preparationTime}</div>
+                            <div className="ingredients">{this.state.ingredients}</div>
+                            <div className="instructions">{this.state.instructions}</div>
+                        </div>}
+                    </div>
+                </div>
+            );
+        });
     }
 
     render() {
@@ -124,6 +166,20 @@ class App extends Component {
                 <div className="recipe-wrapper">
                     {this.state.recipesFound ? this.renderRecipes() : 'Sorry, no recieps found for your request'}
                 </div>
+        <div style={{ height: '100vh', width: '100%' }}>
+<GoogleMapReact
+    bootstrapURLKeys={{ key: 'AIzaSyAlDha-FyRkP7V7B8E3SyxhtCYqeL_6nPI' }}
+    defaultCenter={this.props.center}
+    defaultZoom={this.props.zoom}
+
+        >
+        <AnyReactComponent
+    lat={60.1603071}
+    lng={24.8751406}
+    text="My Marker"
+        />
+        </GoogleMapReact>
+        </div>
             </>
         );
     }

@@ -28,7 +28,11 @@ class App extends Component {
             query: '',
             recipes: {},
             searchFieldIsFalid: true,
-            recipesFound: true
+            recipesFound: true,
+            preparationTime: '',
+            ingredients: '',
+            instructions: '',
+            itemExpanded: false
         };
     }
 
@@ -75,19 +79,37 @@ class App extends Component {
     }
 
     async handleRecipeItemClick(id) {
+        let updatedRecipes = { ...this.state.recipes };
+
+
+        updatedRecipes = _.mapValues(this.state.recipes, item => {
+            item.expanded = (item.payload === id);
+            return item;
+        });
+        console.log(updatedRecipes);
+
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
-        const updatedRecipes = { ...this.state.recipes };
         recipes.forEach(item => {
             if (!updatedRecipes[item.Id]) {
                 console.log('error');
             }
             updatedRecipes[item.Id].data = item;
+            updatedRecipes[item.Id].expanded = true;
         });
+
         this.setState({
             loading: false,
             recipes: updatedRecipes,
+            itemExpanded: true,
+            preparationTime: recipes[0].PreparationTime.Description,
+            ingredients: recipes[0].Ingredients,
+            instructions: recipes[0].Instructions,
+
         });
+        console.log('preparationTime: ', this.state.preparationTime);
+        console.log('preparationTime: ', this.state.ingredients);
+        console.log('preparationTime: ', this.state.instructions);
     }
 
     async loadStores() {
@@ -100,7 +122,7 @@ class App extends Component {
             return (
                 <div
                     className={classNames("recipe-item", {
-                        "recipe-item--expanded": item.data,
+                        "recipe-item--expanded": item.expanded,
                     })}
                     key={id}
                     onClick={() => this.handleRecipeItemClick(id)}
@@ -109,6 +131,11 @@ class App extends Component {
                         <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
                     </div>
                     <div className="recipe-item__title">{item.suggestion}</div>
+                    {this.state.itemExpanded && <div>
+                        <div className="preparation-time"></div>
+                        <div className="ingredients"></div>
+                        <div className="instructions"></div>
+                    </div>}
                 </div>
             );
         });

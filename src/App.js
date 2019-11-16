@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const appKey = 'e99065a211b3465f8b470a08d50d2ef1';
+
+    const sendRequest = async () => {
+        const objectToSend = {
+            "query": "Car",
+        };
+
+        const response = await fetch(`http://localhost:3000/v1/suggestions/recipes`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Ocp-Apim-Subscription-Key': appKey,
+            },
+            body: JSON.stringify(objectToSend),
+        });
+        const text = await response.text();
+        console.log(text);
+    };
+
+    const sendRequest2 = async () => {
+        
+    };
+
+    return (
+        <div className="app">
+            <button className="request-button" onClick={sendRequest}>Send 1</button>
+            <button className="request-button" onClick={sendRequest2}>Send 2</button>
+        </div>
+    );
 }
 
 export default App;

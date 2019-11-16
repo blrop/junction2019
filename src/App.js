@@ -31,8 +31,7 @@ class App extends Component {
             recipesFound: true,
             preparationTime: '',
             ingredients: '',
-            instructions: '',
-            itemExpanded: false
+            instructions: ''
         };
     }
 
@@ -86,7 +85,6 @@ class App extends Component {
             item.expanded = (item.payload === id);
             return item;
         });
-        console.log(updatedRecipes);
 
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
@@ -101,15 +99,14 @@ class App extends Component {
         this.setState({
             loading: false,
             recipes: updatedRecipes,
-            itemExpanded: true,
             preparationTime: recipes[0].PreparationTime.Description,
-            ingredients: recipes[0].Ingredients,
+            ingredients: recipes[0].Ingredients[0].SubSectionIngredients.map((item) => item[0].Name),
             instructions: recipes[0].Instructions,
 
         });
         console.log('preparationTime: ', this.state.preparationTime);
-        console.log('preparationTime: ', this.state.ingredients);
-        console.log('preparationTime: ', this.state.instructions);
+        console.log('ingredients: ', this.state.ingredients);
+        console.log('instructions: ', this.state.instructions);
     }
 
     async loadStores() {
@@ -130,12 +127,14 @@ class App extends Component {
                     <div className="recipe-item__picture">
                         <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
                     </div>
-                    <div className="recipe-item__title">{item.suggestion}</div>
-                    {this.state.itemExpanded && <div>
-                        <div className="preparation-time"></div>
-                        <div className="ingredients"></div>
-                        <div className="instructions"></div>
-                    </div>}
+                    <div className="item-description">
+                        <div className="recipe-item__title">{item.suggestion}</div>
+                        {item.expanded && <div>
+                            <div className="preparation-time">{this.state.preparationTime}</div>
+                            <div className="ingredients">{this.state.ingredients}</div>
+                            <div className="instructions">{this.state.instructions}</div>
+                        </div>}
+                    </div>
                 </div>
             );
         });

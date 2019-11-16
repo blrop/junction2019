@@ -66,7 +66,6 @@ body {
     flex-wrap: wrap;
     padding: 10px;
     background-color: #ffd3ab;
-    opacity: 0.6;
 }
 
 .recipe-item:nth-child(odd) {
@@ -81,11 +80,23 @@ body {
 .recipe-item:hover {
     background: #8ee891;
     cursor: pointer;
-    opacity: 1;
+    -webkit-transform:scale(1.1); /*Webkit: Scale down image to 0.8x original size*/
+    -moz-transform:scale(1.1); /*Mozilla scale version*/
+    -o-transform:scale(1.1); /*Opera scale version*/
+    -webkit-transition-duration: 0.5s; /*Webkit: Animation duration*/
+    -moz-transition-duration: 0.5s; /*Mozilla duration version*/
+    -o-transition-duration: 0.5s; /*Opera duration version*/
 }
 
 .recipe-item--expanded {
     width: 100%;
+    flex-wrap: nowrap;
+}
+
+.recipe-item--expanded:hover {
+    -webkit-transform:scale(1); /*Webkit: Scale down image to 0.8x original size*/
+    -moz-transform:scale(1); /*Mozilla scale version*/
+    -o-transform:scale(1); /*Opera scale version*/
 }
 
 .recipe-item__picture {
@@ -103,7 +114,8 @@ body {
 
 .recipe-item__title {
     flex-shrink: 0;
-    width: 200px;
+    width: auto;
+    font-size: 35px;
 }
 
 .selected-recipe-wrapper {

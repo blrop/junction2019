@@ -17,7 +17,8 @@ class App extends Component {
             loading: false,
             query: '',
             recipes: [],
-            searchFieldIsFalid: true
+            searchFieldIsFalid: true,
+            recipesFound: true
         };
     }
 
@@ -32,6 +33,16 @@ class App extends Component {
         e.preventDefault();
         if (this.state.query && this.state.query !== '') {
             this.sendSearchRequest(this.state.query);
+            if (this.state.recipes.length === 0) {
+                this.setState({
+                    recipesFound: false
+                });
+                console.log('no recipes found')
+            } else {
+                this.setState({
+                    recipesFound: true
+                });
+            }
 
         } else {
             this.setState({
@@ -88,7 +99,7 @@ class App extends Component {
                 </form>
 
                 <div className="recipe-wrapper">
-                    {this.renderRecipes()}
+                    {this.state.recipesFound ? this.renderRecipes() : 'Sorry, no recieps found for your request'}
                 </div>
             </>
         );

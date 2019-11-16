@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore, getProductDetailsFromStore, getPictures } from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby } from "./requestFunctions";
 import _ from 'lodash';
 import {PICTURE_LINK} from "./constants";
+import classNames from 'classnames';
 
 class App extends Component {
     constructor(props) {
@@ -24,7 +25,6 @@ class App extends Component {
 
     componentDidMount() {
         this.loadStores();
-        this.loadRecipePictures();
     }
 
     handleQueryChange(e) {
@@ -67,19 +67,24 @@ class App extends Component {
         console.log(await getStoresNearby());
     }
 
-    async loadRecipePictures() {
-        const pictures = await getPictures();
-    }
-
     renderRecipes() {
-        return _.map(this.state.recipes, item => (
-            <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
-                <div className="recipe-item__picture">
-                    <img src={`${PICTURE_LINK}${item.payload}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+        return _.map(this.state.recipes, item => {
+            const id = item.payload;
+            return (
+                <div
+                    className={classNames("recipe-item", {
+                        "recipe-item--expanded": item.data,
+                    })}
+                    key={id}
+                    onClick={() => this.handleRecipeItemClick(id)}
+                >
+                    <div className="recipe-item__picture">
+                        <img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} alt="item.suggestion"/>
+                    </div>
+                    <div className="recipe-item__title">{item.suggestion}</div>
                 </div>
-                <div className="recipe-item__title">{item.suggestion}</div>
-            </div>
-        ));
+            );
+        });
     }
 
     render() {

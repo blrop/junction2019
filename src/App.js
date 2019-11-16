@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './reset.css';
 import './App.css';
 import {getRecipe, getRecipeList} from "./requestFunctions";
 
@@ -16,18 +17,27 @@ class App extends Component {
             loading: false,
             query: '',
             recipes: [],
+            searchFieldIsFalid: true
         };
     }
 
     handleQueryChange(e) {
         this.setState({
             query: e.target.value,
-        });
+            searchFieldIsFalid: true
+        })
     }
 
     handleSearchSubmit(e) {
         e.preventDefault();
-        this.sendSearchRequest(this.state.query);
+        if (this.state.query && this.state.query !== '') {
+            this.sendSearchRequest(this.state.query);
+
+        } else {
+            this.setState({
+                searchFieldIsFalid: false
+            })
+        }
     }
 
     async sendSearchRequest(requestString) {
@@ -69,7 +79,7 @@ class App extends Component {
                             type="text"
                             onChange={this.handleQueryChange}
                             value={this.state.query}
-                            className="request-form__input"
+                            className={this.state.searchFieldIsFalid ? 'request-form__input' : 'request-form__input error'}
                             placeholder="Recipe name..."
                             autoFocus
                         />

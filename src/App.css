@@ -16,6 +16,7 @@ body {
 
 .request-form fieldset {
     border: none;
+    margin-bottom: 20px;
 }
 
 .request-form__input,
@@ -25,13 +26,12 @@ body {
 }
 
 .request-form__button {
-    background-color: #98ff98;
+    background-color: rgba(255, 130, 0, 0.41);
     border: none;
-    border-radius: 10px;
     box-shadow: 2px 2px 2px gray;
     cursor: pointer;
     outline: none;
-    font-size: 25px;
+    font-size: 33px;
 }
 
 .request-form__button:active {
@@ -41,19 +41,23 @@ body {
 }
 
 .request-form__input {
-    border-radius: 10px;
     margin-right: 30px;
-    border: 1px solid #56d856;
+    border: 1px solid rgba(162, 157, 152, 0.47);
     outline: none;
-    padding: 10px 5px;
+    padding: 5px;
     font-size: 33px;
+}
+
+.request-form__input.error {
+    border: 2px solid red;
 }
 
 .recipe-wrapper {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin: 20px;
+    width: 400px;
+    margin: auto;
 }
 
 .recipe-item {

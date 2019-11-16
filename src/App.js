@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import {getRecipe, getRecipeList, getProductsByStore, getProductDetailsFromStore} from "./requestFunctions";
+import { getRecipe, getRecipeList, getStoresNearby, getProductsByStore } from "./requestFunctions";
+import _ from 'lodash';
 
 class App extends Component {
     constructor(props) {
@@ -15,8 +16,13 @@ class App extends Component {
         this.state = {
             loading: false,
             query: '',
-            recipes: [],
+            recipes: {},
+            selectedRecipes: [],
         };
+    }
+
+    componentDidMount() {
+        this.loadStores();
     }
 
     handleQueryChange(e) {
@@ -35,21 +41,32 @@ class App extends Component {
         const response = await getRecipeList(requestString);
         this.setState({
             loading: false,
-            recipes: response.suggestions,
+            recipes: _.keyBy(response.suggestions, item => item.payload),
         });
     }
 
     async handleRecipeItemClick(id) {
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
-        console.log(recipes);
-        //const pd = await getProductDetailsFromStore('S387', '6410405045416');
-        //console.log(pd);
-        this.setState({ loading: false });
+        const updatedRecipes = { ...this.state.recipes };
+        recipes.forEach(item => {
+            if (!updatedRecipes[item.Id]) {
+                console.log('error');
+            }
+            updatedRecipes[item.Id].data = item;
+        });
+        this.setState({
+            loading: false,
+            recipes: updatedRecipes,
+        });
+    }
+
+    async loadStores() {
+        console.log(await getStoresNearby());
     }
 
     renderRecipes() {
-        return this.state.recipes.map(item => (
+        return _.map(this.state.recipes, item => (
             <div className="recipe-item" key={item.payload} onClick={() => this.handleRecipeItemClick(item.payload)}>
                 <div className="recipe-item__title">{item.suggestion}</div>
             </div>

@@ -83,3 +83,11 @@ body {
 .recipe-item__title {
 
 }
+
+.selected-recipe-wrapper {
+    background: #ffc;
+}
+
+.selected-recipe__item {
+    padding: 20px;
+}

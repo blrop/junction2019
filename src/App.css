@@ -21,5 +21,24 @@ body {
 }
 
 .recipe-item {
+    display: flex;
+    padding: 5px;
+}
+
+.recipe-item:hover {
+    background: #fc5;
+    cursor: pointer;
+}
+
+.recipe-item:nth-child(2n) {
+    background: #eee;
+}
+
+.recipe-item__id {
+    color: #888;
+    margin-right: 20px;
+}
+
+.recipe-item__title {
 
 }

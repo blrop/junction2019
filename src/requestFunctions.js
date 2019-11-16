@@ -1,4 +1,4 @@
-import {API_VER, APP_KEY, JSON_TYPE, REQUEST_URL, STUB_LOCATION} from "./constants";
+import {API_VER, APP_KEY, JSON_TYPE, REQUEST_URL, STORES_SEARCH_DISTANCE, STUB_LOCATION} from "./constants";
 
 export const getRecipeList = async (requestString) => {
     const objectToSend = {
@@ -33,11 +33,11 @@ export const getRecipe = async (id) => {
     return response.results;
 };
 
-export const getStoresNearby = async (id) => {
+export const getStoresNearby = async () => {
     const objectToSend = {"filters": {
             "locationDistance" : {
                 "location": STUB_LOCATION,
-                "distance": 1
+                "distance": STORES_SEARCH_DISTANCE,
             }
         }
     };

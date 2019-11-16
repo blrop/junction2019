@@ -29,7 +29,10 @@ class App extends Component {
             query: '',
             recipes: {},
             searchFieldIsFalid: true,
-            recipesFound: true
+            recipesFound: true,
+            preparationTime: '',
+            ingredients: '',
+            instructions: ''
         };
     }
 
@@ -76,19 +79,35 @@ class App extends Component {
     }
 
     async handleRecipeItemClick(id) {
+        let updatedRecipes = { ...this.state.recipes };
+
+
+        updatedRecipes = _.mapValues(this.state.recipes, item => {
+            item.expanded = (item.payload === id);
+            return item;
+        });
+
         this.setState({ loading: true });
         const recipes = await getRecipe(id);
-        const updatedRecipes = { ...this.state.recipes };
         recipes.forEach(item => {
             if (!updatedRecipes[item.Id]) {
                 console.log('error');
             }
             updatedRecipes[item.Id].data = item;
+            updatedRecipes[item.Id].expanded = true;
         });
+
         this.setState({
             loading: false,
             recipes: updatedRecipes,
+            preparationTime: recipes[0].PreparationTime.Description,
+            ingredients: recipes[0].Ingredients[0].SubSectionIngredients.map((item) => item[0].Name),
+            instructions: recipes[0].Instructions,
+
         });
+        console.log('preparationTime: ', this.state.preparationTime);
+        console.log('ingredients: ', this.state.ingredients);
+        console.log('instructions: ', this.state.instructions);
     }
 
     async loadStores() {
@@ -101,7 +120,7 @@ class App extends Component {
             return (
                 <div
                     className={classNames("recipe-item", {
-                        "recipe-item--expanded": item.data,
+                        "recipe-item--expanded": item.expanded,
                     })}
                     key={id}
                     onClick={() => this.handleRecipeItemClick(id)}
@@ -109,7 +128,14 @@ class App extends Component {
                     <div className="recipe-item__picture">
                         <Img src={`${PICTURE_LINK}${id}?w=200&h=150&fit=clip`} />
                     </div>
-                    <div className="recipe-item__title">{item.suggestion}</div>
+                    <div className="item-description">
+                        <div className="recipe-item__title">{item.suggestion}</div>
+                        {item.expanded && <div>
+                            <div className="preparation-time">{this.state.preparationTime}</div>
+                            <div className="ingredients">{this.state.ingredients}</div>
+                            <div className="instructions">{this.state.instructions}</div>
+                        </div>}
+                    </div>
                 </div>
             );
         });

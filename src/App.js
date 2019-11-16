@@ -184,22 +184,28 @@ class App extends Component {
             <>
                 {this.state.loading && <div className="loading-indicator">Loading...</div>}
 
-                <h1>Save your money. Reduce food waste.</h1>
-                <h2>What do you want to cook?</h2>
+                <header>
+                    <h1>Save your money. Reduce food waste.</h1>
+                </header>
+
                 <form
                     className="request-form"
                     onSubmit={this.handleSearchSubmit}
 
                 >
                     <fieldset disabled={this.state.loading}>
-                        <input
-                            type="text"
-                            onChange={this.handleQueryChange}
-                            value={this.state.query}
-                            className={this.state.searchFieldIsFalid ? 'request-form__input' : 'request-form__input error'}
-                            placeholder="Recipe name..."
-                            autoFocus
-                        />
+                        <div className="search-input-f">
+                            <label>What do you want to cook?</label>
+                            <input
+                                type="text"
+                                onChange={this.handleQueryChange}
+                                value={this.state.query}
+                                className={this.state.searchFieldIsFalid ? 'request-form__input' : 'request-form__input error'}
+                                placeholder="Type recipe name..."
+                                autoFocus
+                            />
+                        </div>
+
                         <button className="request-form__button">Search</button>
                     </fieldset>
                 </form>

@@ -1,5 +1,6 @@
 body {
-    padding: 20px;
+    /*padding: 20px;*/
+    font-family: 'sans-serif';
 }
 
 .loading-indicator {
@@ -11,14 +12,27 @@ body {
 }
 
 .request-form {
-    text-align: center;
+    display: flex;
+    margin-bottom: 20px;
 }
 
 .request-form fieldset {
     border: none;
     margin-bottom: 20px;
+    margin: auto;
 }
 
+.search-input-f {
+    width: 400px;
+    float: left;
+    margin-top: -13px;
+}
+
+.search-input-f label {
+    float: left;
+    font-size: 23px;
+    line-height: 40px;
+}
 .request-form__input,
 .request-form__button {
     padding: 5px 10px;
@@ -32,11 +46,12 @@ body {
     cursor: pointer;
     outline: none;
     font-size: 33px;
+    margin-top: 26px;
 }
 
 .request-form__button:active {
     box-shadow: 0px 0px 0px gray;
-    margin-top: 2px;
+    margin-top: 28px;
     margin-left: 2px;
 }
 
@@ -115,17 +130,28 @@ body {
 .recipe-item__title {
     flex-shrink: 0;
     width: auto;
-    font-size: 35px;
+    font-size: 25px;
+}
+
+header {
+    padding: 50px 0;
+    width: 100%;
+    background-color: #e0f7e2;
+    margin-bottom: 20px;
 }
 
 h1 {
     text-align: center;
-    color: #ffa148;
+    color: black;
+    font-size: 35px;
+    line-height: 35px;
 }
 
 h2 {
     text-align: center;
-    color: #e874ff;
+    color: black;
+    font-size: 30px;
+    line-height: 35px;
 }
 
 .selected-recipe-wrapper {

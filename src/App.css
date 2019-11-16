@@ -2,8 +2,20 @@ body {
     padding: 20px;
 }
 
+.loading-indicator {
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: #fc5;
+    padding: 10px 5px;
+}
+
 .request-form {
     text-align: center;
+}
+
+.request-form fieldset {
+    border: none;
 }
 
 .request-form__input,
@@ -17,7 +29,8 @@ body {
 }
 
 .recipe-wrapper {
-
+    margin: 20px auto;
+    width: 960px;
 }
 
 .recipe-item {
@@ -25,13 +38,13 @@ body {
     padding: 5px;
 }
 
+.recipe-item:nth-child(even) {
+    background: #eee;
+}
+
 .recipe-item:hover {
     background: #fc5;
     cursor: pointer;
-}
-
-.recipe-item:nth-child(2n) {
-    background: #eee;
 }
 
 .recipe-item__id {

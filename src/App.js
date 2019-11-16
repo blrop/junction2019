@@ -13,6 +13,7 @@ class App extends Component {
         this.handleRecipeItemClick = this.handleRecipeItemClick.bind(this);
 
         this.state = {
+            loading: false,
             query: '',
             recipes: [],
         };
@@ -34,6 +35,8 @@ class App extends Component {
     }
 
     async sendRequest(requestString) {
+        this.setState({ loading: true });
+
         const objectToSend = {
             query: requestString,
         };
@@ -47,6 +50,8 @@ class App extends Component {
             body: JSON.stringify(objectToSend),
         });
         const text = await rawResponse.text();
+        this.setState({ loading: false });
+
         console.log(text);
         const response = JSON.parse(text);
         this.setState({
@@ -66,16 +71,26 @@ class App extends Component {
     render() {
         return (
             <>
-                <form className="request-form" onSubmit={this.handleSearchSubmit}>
-                    <input
-                        type="text"
-                        onChange={this.handleQueryChange}
-                        value={this.state.query}
-                        className="request-form__input"
-                        placeholder="Recipe name..."
-                    />
-                    <button className="request-form__button">Search</button>
+                {this.state.loading && <div className="loading-indicator">Loading...</div>}
+
+                <form
+                    className="request-form"
+                    onSubmit={this.handleSearchSubmit}
+
+                >
+                    <fieldset disabled={this.state.loading}>
+                        <input
+                            type="text"
+                            onChange={this.handleQueryChange}
+                            value={this.state.query}
+                            className="request-form__input"
+                            placeholder="Recipe name..."
+                            autoFocus
+                        />
+                        <button className="request-form__button">Search</button>
+                    </fieldset>
                 </form>
+
                 <div className="recipe-wrapper">
                     {this.renderRecipes()}
                 </div>

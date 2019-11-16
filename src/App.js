@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './reset.css';
 import './App.css';
 import { getRecipe, getRecipeList, getStoresNearby } from "./requestFunctions";
 import _ from 'lodash';
@@ -19,7 +20,8 @@ class App extends Component {
             loading: false,
             query: '',
             recipes: {},
-            selectedRecipes: [],
+            searchFieldIsFalid: true,
+            recipesFound: true
         };
     }
 
@@ -30,12 +32,30 @@ class App extends Component {
     handleQueryChange(e) {
         this.setState({
             query: e.target.value,
-        });
+            searchFieldIsFalid: true
+        })
     }
 
     handleSearchSubmit(e) {
         e.preventDefault();
-        this.sendSearchRequest(this.state.query);
+        if (this.state.query && this.state.query !== '') {
+            this.sendSearchRequest(this.state.query);
+            if (this.state.recipes.length === 0) {
+                this.setState({
+                    recipesFound: false
+                });
+                console.log('no recipes found')
+            } else {
+                this.setState({
+                    recipesFound: true
+                });
+            }
+
+        } else {
+            this.setState({
+                searchFieldIsFalid: false
+            })
+        }
     }
 
     async sendSearchRequest(requestString) {
@@ -102,7 +122,7 @@ class App extends Component {
                             type="text"
                             onChange={this.handleQueryChange}
                             value={this.state.query}
-                            className="request-form__input"
+                            className={this.state.searchFieldIsFalid ? 'request-form__input' : 'request-form__input error'}
                             placeholder="Recipe name..."
                             autoFocus
                         />
@@ -111,7 +131,7 @@ class App extends Component {
                 </form>
 
                 <div className="recipe-wrapper">
-                    {this.renderRecipes()}
+                    {this.state.recipesFound ? this.renderRecipes() : 'Sorry, no recieps found for your request'}
                 </div>
             </>
         );

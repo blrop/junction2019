@@ -16,6 +16,7 @@ body {
 
 .request-form fieldset {
     border: none;
+    margin-bottom: 20px;
 }
 
 .request-form__input,
@@ -24,32 +25,58 @@ body {
     font-size: 16px;
 }
 
-.request-form__input {
+.request-form__button {
+    background-color: rgba(255, 130, 0, 0.41);
+    border: none;
+    box-shadow: 2px 2px 2px gray;
+    cursor: pointer;
+    outline: none;
+    font-size: 33px;
+}
 
+.request-form__button:active {
+    box-shadow: 0px 0px 0px gray;
+    margin-top: 2px;
+    margin-left: 2px;
+}
+
+.request-form__input {
+    margin-right: 30px;
+    border: 1px solid rgba(162, 157, 152, 0.47);
+    outline: none;
+    padding: 5px;
+    font-size: 33px;
+}
+
+.request-form__input.error {
+    border: 2px solid red;
 }
 
 .recipe-wrapper {
-    margin: 20px 50px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    position: relative;
+    width: 400px;
+    margin: auto;
 }
 
 .recipe-item {
     display: flex;
-    padding: 5px;
-    align-items: center;
-    flex-shrink: 0;
-    width: 33%;
+    width: 400px;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.recipe-item:nth-child(odd) {
+    background-color: rgba(255, 228, 0, 0.22);
 }
 
 .recipe-item:nth-child(even) {
-    background: #eee;
+    background-color: rgba(255, 130, 0, 0.41);
 }
 
 .recipe-item:hover {
-    background: #fc5;
+    background: #8ee891;
     cursor: pointer;
 }
 

@@ -50,3 +50,13 @@ body {
 .recipe-item__title {
 
 }
+
+h1 {
+    text-align: center;
+    color: #ffa148;
+}
+
+h2 {
+    text-align: center;
+    color: #e874ff;
+}

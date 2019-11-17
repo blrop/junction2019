@@ -73,6 +73,7 @@ body {
     flex-wrap: wrap;
     width: 850px;
     margin: auto;
+    line-height: 51px;
 }
 
 .recipe-item {
@@ -81,6 +82,7 @@ body {
     flex-wrap: wrap;
     padding: 10px;
     background-color: #ffd3ab;
+    line-height: 20px;
 }
 
 .recipe-item:nth-child(odd) {

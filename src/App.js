@@ -60,10 +60,11 @@ class App extends Component {
         e.preventDefault();
         if (this.state.query && this.state.query !== '') {
             this.sendSearchRequest(this.state.query);
-            if (this.state.recipes.length === 0) {
+            if (Object.keys(this.state.recipes).length === 0) {
                 this.setState({
                     recipesFound: false
                 });
+                console.log('this.state.recipes:', this.state.recipes);
                 console.log('no recipes found')
             } else {
                 this.setState({

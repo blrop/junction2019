@@ -116,6 +116,14 @@ class App extends Component {
         });
         // console.log('preparationTime: ', this.state.preparationTime);
         // console.log('ingredients: ', this.state.ingredients);
+
+        this.state.ingredients.map(item => {
+            return (
+                <ul>
+                    <li>item</li>
+                </ul>
+            )
+        })
         // console.log('instructions: ', this.state.instructions);
 
 
@@ -134,7 +142,7 @@ class App extends Component {
             }
         });
         this.setState({filteredStores: filteredStores});
-        console.log(filteredStores);
+        // console.log(filteredStores);
     }
 
     async loadStores() {
@@ -175,7 +183,13 @@ class App extends Component {
                             </div>
                             <div className="recipe-item-b">
                                 <div className="recipe-item-b-title">Ingredients</div>
-                                <div className="ingredients">{this.state.ingredients}</div>
+                                <div className="ingredients">{
+                                        this.state.ingredients && <div><ul>{
+                                        this.state.ingredients.map((item, i) => {
+                                        return (<li key={i}>{item}, </li>)
+                                })
+                                }</ul></div>
+                                }</div>
                             </div>
                             <div className="recipe-item-b">
                                 <div className="recipe-item-b-title">Instructions</div>

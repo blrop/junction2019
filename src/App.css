@@ -173,6 +173,12 @@ h2 {
     width: 100%;
     line-height:25px;
 }
+
+.ingredients ul{
+    list-style-type: circle;
+    margin-left: 25px;
+}
+
 .marker {
     font-size: 30px;
 }
